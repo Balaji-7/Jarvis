@@ -125,7 +125,8 @@ def process_command():
         try:
             url = f"https://www.google.com/search?q={search_query.replace(' ', '+')}"
             webbrowser.open(url)
-            response = f"Searching for {search_query} on Google"
+            # response = f"Searching for {search_query} on Google"
+            response = {'success': True, 'url': url, 'message': f"Searching for {search_query} on Google.",'searchText':search_query}
         except:
             response = f"Unable to perform search for {search_query}."
 
