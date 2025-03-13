@@ -3,3 +3,4 @@ flask-cors
 speechrecognition
 pyttsx3
 wikipedia
+gunicorn
