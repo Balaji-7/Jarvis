@@ -1,6 +1,7 @@
 Flask
 flask-cors
+gunicorn
 gtts
+speechrecognition
 wikipedia-api
 waitress
-gunicorn
