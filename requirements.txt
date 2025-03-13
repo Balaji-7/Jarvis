@@ -1,0 +1,7 @@
+flask
+flask-cors
+speechrecognition
+pyttsx3
+wikipedia
+webbrowser
+pyaudio
