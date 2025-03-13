@@ -3,4 +3,3 @@ flask-cors
 speechrecognition
 pyttsx3
 wikipedia
-pyaudio
