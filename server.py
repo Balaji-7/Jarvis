@@ -18,11 +18,13 @@ def speak(text):
     tts.save(file_path)
     return file_path
 
-def open_application(command):
+def open_application(command,env):
     """Function to open applications based on command"""
     system = platform.system()
-
+    print(env)
     if "chrome" in command:
+        if env == "live":
+            return "Click here to open Google: https://www.google.com"
         if system == "Windows":
             subprocess.run("start chrome", shell=True)  # Windows
         elif system == "Darwin":
@@ -32,12 +34,16 @@ def open_application(command):
         return "Opening Chrome"
 
     elif "notepad" in command:
+        if env == "live":
+            return "You can open Notepad by pressing Win + R and typing 'notepad"
         if system == "Windows":
             subprocess.run("notepad", shell=True)
             return "Opening Notepad"
         return "Notepad is only available on Windows"
 
     elif "vscode" in command or "visual studio code" in command:
+        if env == "live":
+            return "You can open VS Code from your start menu or by running 'code' in a terminal."
         if system == "Windows":
             subprocess.run("code", shell=True)
         elif system == "Darwin":
@@ -47,6 +53,8 @@ def open_application(command):
         return "Opening Visual Studio Code"
 
     elif "calculator" in command:
+        if env == "live":
+            return "Open the calculator manually on your device."
         if system == "Windows":
             subprocess.run("calc", shell=True)
         elif system == "Darwin":
@@ -86,13 +94,21 @@ def home():
 def process_command():
     data = request.json
     command = data.get("command", "").lower()
+    
+    client_host = request.host  # Gets the host of the request
+    # client_ip = request.remote_addr  # Gets the IP of the requester
+
+    if "127.0.0.1" in client_host or "localhost" in client_host:  # Check if local
+        environment = "local"
+    else:
+        environment = "live"
 
     if not command:
         return jsonify({"response":"No Command Received."})
 
     response = "I'm not sure how to respond to that"
 
-    appresponse = open_application(command)
+    appresponse = open_application(command,environment)
     if appresponse:
         response = appresponse
 
@@ -107,7 +123,8 @@ def process_command():
     elif "search" in command:
         search_query = command.replace("search", "").strip()
         try:
-            webbrowser.open(f"https://www.google.com/search?q={search_query}")
+            url = f"https://www.google.com/search?q={search_query.replace(' ', '+')}"
+            webbrowser.open(url)
             response = f"Searching for {search_query} on Google"
         except:
             response = f"Unable to perform search for {search_query}."
