@@ -3,5 +3,5 @@ flask-cors
 gunicorn
 gtts
 speechrecognition
-wikipedia-api
+wikipedia
 waitress
