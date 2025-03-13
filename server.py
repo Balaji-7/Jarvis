@@ -1,7 +1,7 @@
 from flask import Flask,request,jsonify
 from flask_cors import CORS
+from gtts import gTTS
 import speech_recognition as sr
-import pyttsx3
 import subprocess
 import platform
 import webbrowser
@@ -11,13 +11,12 @@ import datetime
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-engine = pyttsx3.init()
-engine.setProperty("rate",150)
-engine.setProperty("volume",1.0)
 
 def speak(text):
-    engine.say(text)
-    engine.runAndWait()
+    tts = gTTS(text=text, lang='en')
+    file_path = "response.mp3"
+    tts.save(file_path)
+    return file_path
 
 def open_application(command):
     """Function to open applications based on command"""
@@ -102,9 +101,12 @@ def process_command():
         response = f"Today's date is {today}"
 
     elif "search" in command:
-        search_query = command.replace("search","").strip()
-        webbrowser.open(f"https://www.google.com/search?q={search_query}")
-        response = f"searching for {search_query} on Google"
+        search_query = command.replace("search", "").strip()
+        try:
+            webbrowser.open(f"https://www.google.com/search?q={search_query}")
+            response = f"Searching for {search_query} on Google"
+        except:
+            response = f"Unable to perform search for {search_query}."
 
     elif "wikipedia" in command:
         topic = command.replace("wikipedia", "").strip()
@@ -123,7 +125,10 @@ def process_command():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    from waitress import serve  # Waitress is better for Windows
+    print("Starting server on port 8000...")
+    serve(app, host="0.0.0.0", port=8000)
+   
     
 
 

@@ -1,6 +1,6 @@
-flask
+Flask
 flask-cors
-speechrecognition
-pyttsx3
-wikipedia
+gtts
+wikipedia-api
+waitress
 gunicorn
