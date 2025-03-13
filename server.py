@@ -77,6 +77,10 @@ def listen():
         speak("Could not connect to the recognition service.")
         return None
 
+@app.route("/")
+def home():
+    return "Hello, your Flask app is running!"
+
 
 @app.route("/process_command", methods=["POST"])
 def process_command():
