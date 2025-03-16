@@ -5,3 +5,4 @@ gtts
 speechrecognition
 wikipedia
 waitress
+pytz
