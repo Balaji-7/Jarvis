@@ -7,6 +7,7 @@ import platform
 import webbrowser
 import wikipedia
 import datetime
+import pytz
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -93,6 +94,7 @@ def home():
 def process_command():
     data = request.json
     command = data.get("command", "").lower()
+    user_timezone = data.get("timezone", "UTC")
     
     client_host = request.host  # Gets the host of the request
     # client_ip = request.remote_addr  # Gets the IP of the requester
@@ -112,7 +114,8 @@ def process_command():
         response = appresponse
 
     if "time" in command:
-        now = datetime.datetime.now().strftime("%H:%M")
+        local_tz = pytz.timezone(user_timezone)
+        now = datetime.datetime.now(local_tz).strftime("%H:%M")
         response = f"The Current time is {now}"
     
     elif "date" in command:
