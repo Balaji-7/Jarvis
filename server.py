@@ -21,7 +21,6 @@ def speak(text):
 def open_application(command,env):
     """Function to open applications based on command"""
     system = platform.system()
-    print(env)
     if "chrome" in command:
         if env == "live":
             return "Click here to open Google: https://www.google.com"
@@ -124,7 +123,7 @@ def process_command():
         search_query = command.replace("search", "").strip()
         try:
             url = f"https://www.google.com/search?q={search_query.replace(' ', '+')}"
-            webbrowser.open(url)
+            # webbrowser.open(url)
             # response = f"Searching for {search_query} on Google"
             response = {'success': True, 'url': url, 'message': f"Searching for {search_query} on Google.",'searchText':search_query}
         except:
